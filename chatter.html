@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<link href="styles/chatter.css" rel="stylesheet" type="text/css">
+</head>
+	
+<body>
+	<div id="main-container">
+		<div id="settings">
+			<input type="text" class="image">
+			<input type="text" class="username">
+		</div>
+		<div id="message-container">
+			<ul id="message-list">
+	<!--
+				<li>
+					<div class="message-container">
+						<div class="message-image" style="background-image:url('img/cubes.jpg');"></div>
+						<div class="message-info"><span class="time">12:00</span><br><span class="username">Joe Pfeiffer</span></div>
+						<div class="message-message">
+							<p>This is a test</p>
+						</div>
+					</div>
+				</li>
+	-->
+			</ul>
+		</div>
+		<div id="new-message-controls-container">
+			<div class="controls">
+				<textarea class="text"></textarea>
+				<button class="button">Send</button>
+			</div>
+		</div>
+	</div>
+	<script src="script/handlebars-v3.0.0.js"></script>
+	<script src="script/jquery/jquery-2.1.1.js"></script>
+	<script src="script/chatter.js"></script>
+	<script id="message-template" type="text/x-handlebars-template">
+		<li>
+			<div class="message-container">
+				<div class="message-image" style="background-image:url('{{image}}');"></div>
+				<div class="message-info"><span class="time">{{time}}</span><br><span class="username">{{username}}</span></div>
+				<div class="message-message">
+					<p>{{message}}</p>
+				</div>
+			</div>
+		</li>
+	</script>
+</body>
+</html>
