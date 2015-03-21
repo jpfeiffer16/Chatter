@@ -19,12 +19,19 @@ var server = app.listen(port, function(request, response) {
 var serverSentEvents = new sse(server);
 
 app.use(bodyParser());
+//Send the html for the one-page app
+app.get('/', function(request, response) {
+//	var page = fileSystem.readFileSync(path.normalize(__dirname + '/chatter.html'), 'utf8');
+//	response.send(page);
+	var page = getPage('404.html', 'chatter.html');
+	response.send(page);
+});
 
 app.get('*', function(request, response) {
 	var page = getPage('404.html', request.path);
 	var extension = path.extname(request.path);
 	response.header('Content-Type', getMimeType(request.path));
-	var fileExts = '.jpg.png.woff';
+	var fileExts = '.jpg.jpeg.png.woff';
 	if(fileExts.indexOf(extension) != -1) {
 		response.sendFile(__dirname + path.normalize(request.path));
 	} else {
@@ -34,16 +41,24 @@ app.get('*', function(request, response) {
 
 app.post('/', function(request, response) {
 	var data = request.body;
+	var stringData = JSON.stringify(data);
+	if(data.message.indexOf('bombardall/') != -1) {
+		var pos = data.message.indexOf('bombardall/') + 11;
+		var dataToBomb = data.message.substring(pos);
+		console.log(dataToBomb);
+		var interval = setInterval(function() {
+			data.message = dataToBomb;
+			sendToClients(JSON.stringify(data));
+			console.log('sending');
+		}, 200);
+		setTimeout(function() {
+			clearInterval(interval);
+		}, 5000);
+	}
 	messages.push(data);
 	sendToClients(JSON.stringify(data));
-	response.send('data recieved');
+	response.send('recieved');
 });
-
-//Send the html for the one-page app
-//app.get('/', function(request, response) {
-//	var page = fileSystem.readFileSync(path.normalize(__dirname + '/chatter.html'), 'utf8');
-//	response.send(page);
-//});
 
 var clientList = [];
 
@@ -57,6 +72,7 @@ function sendToClients(message) {
 		clientList[i].send(message);
 		//'{\"image\" : \"img/cubes.jpg\", \"username\" : \"Joe Pfeiffer\", \"time\" : \"12:00\", \"message\" : \"Hi There!\"}'
 	}
+	console.log('sendToClients');
 }
 
 function getPage(defaultPage, url) {

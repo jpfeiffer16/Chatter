@@ -1,4 +1,11 @@
 $(document).on('ready', function() {
+	setCreds();
+	
+//	var messageListHeight = $('#message-list').height();
+	var messageListHeight = $(document).height() * .815;
+	$('#message-list').height(messageListHeight);
+	//alert(messageListHeight);
+	
 	var sse = new EventSource('/sse');
 	sse.onmessage = function(event) {
 		var messageList = $('#message-list');
@@ -10,6 +17,8 @@ $(document).on('ready', function() {
 		var context = JSON.parse(event.data);
 		var html = newMessageTemplate(context);
 		messageList.append(html);
+		
+		messageList.scrollTop(messageList[0].scrollHeight);
 		//console.log(html);
 	}
 	
@@ -24,12 +33,14 @@ $(document).on('ready', function() {
 		}
 	});
 	
+	function testImagePost() {}
+	
 	function sendMessage() {
 		var date = new Date();
 		var imageUrl = $('#settings .image').val();
 		var username = $('#settings .username').val();
 		//"img/cubes.jpg"
-		alert(window.location.hostname + ", " + window.location.port);
+		//alert(window.location.hostname + ", " + window.location.port);
 		$.post('http://' + window.location.hostname + ':' + window.location.port,{image: imageUrl, time: date.getHours().toString() + ':' + date.getMinutes().toString(), username: username, message: $('#new-message-controls-container .controls .text').val()})
 		.done(function(data) {
 			if(data == 'recieved') {
@@ -39,6 +50,17 @@ $(document).on('ready', function() {
 			}
 		});
 		$('#new-message-controls-container .controls .text').val('');
+		storeCreds();
+	}
+	
+	function storeCreds() {
+		localStorage.setItem('image', $('#settings .image').val());
+		localStorage.setItem('username', $('#settings .username').val());
+	}
+	
+	function setCreds() {
+		$('#settings .image').val(localStorage.getItem('image'));
+		$('#settings .username').val(localStorage.getItem('username'));
 	}
 	
 });
