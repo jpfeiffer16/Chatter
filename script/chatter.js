@@ -1,10 +1,16 @@
 $(document).on('ready', function() {
 	setCreds();
+
 	
-//	var messageListHeight = $('#message-list').height();
-	var messageListHeight = $(document).height() * .815;
-	$('#message-list').height(messageListHeight);
-	//alert(messageListHeight);
+	
+	reposition();
+	
+	
+	
+	function reposition() {
+		var messageListHeight = $(window).height() * .815;
+		$('#message-list').height(messageListHeight);
+	}
 	
 	var sse = new EventSource('/sse');
 	sse.onmessage = function(event) {
@@ -33,7 +39,13 @@ $(document).on('ready', function() {
 		}
 	});
 	
-	function testImagePost() {}
+	$(window).on('resize', function() {
+		reposition();
+	});
+	
+	$(window).on('orientationchange', function(e) {
+		reposition();
+	});
 	
 	function sendMessage() {
 		var date = new Date();

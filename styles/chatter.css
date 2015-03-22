@@ -1,3 +1,8 @@
+@font-face {
+    font-family: icomoon;
+    src: url("../fonts/icomoon.woff");
+}
+
 /*
 #main-container {
 	width: 80%;
@@ -51,24 +56,25 @@
 
 .message-message p {
 	margin: 0 5px;
+	word-break: break-word;
 }
 
 #new-message-controls-container {
 	position: relative;
 	width: 100%;
 	bottom: 0px;
+	height: 50px;
 }
 
 #new-message-controls-container .controls {
 	position: relative;
-	width: 78%;
+	width: 100%;
 }
 
 #new-message-controls-container .controls .button {
 	position: relative;
-	width: 18%;
-	height: 86px;
-	float: right;
+	width: 80px;
+	height: 56px;
 
 	
 	background: #34a5d9;
@@ -81,7 +87,7 @@
 	-moz-border-radius: 8;
 	border-radius: 8px;
 	text-shadow: 1px 1px 3px #666666;
-	font-family: Courier New;
+/*	font-family: Courier New;*/
 	color: #ffffff;
 	font-size: 30px;
 	padding: 10px 20px 10px 20px;
@@ -100,10 +106,16 @@
 
 #new-message-controls-container .controls .text {
 	position: relative;
-	width: 80%;
-	height: 80px;
+	width: 60%;
+	height: 50px;
 	float: left;
 	resize: none;
 	font-family: Courier New;
 	font-size: 20px;
+}
+
+.icon {
+	font-family: icomoon;
+	font-weight: bold;
+	background-color: red;
 }
