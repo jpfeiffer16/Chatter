@@ -21,10 +21,9 @@ var serverSentEvents = new sse(server);
 app.use(bodyParser());
 //Send the html for the one-page app
 app.get('/', function(request, response) {
-//	var page = fileSystem.readFileSync(path.normalize(__dirname + '/chatter.html'), 'utf8');
+//	var page = getPage('404.html', 'chatter.html');
 //	response.send(page);
-	var page = getPage('404.html', 'chatter.html');
-	response.send(page);
+	response.send("Hi");
 });
 
 app.get('*', function(request, response) {
