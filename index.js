@@ -1,15 +1,13 @@
 var express = require('express');
-
 var app = express();
 
-var port = 80;
-
-var server = app.listen(port, function(request, response) {
-	console.log('------------------------');
-	console.log('Yo, sup homi.. Welcome to the server for chatter. Your server\'s at localhost on port %s', port);
-});
-
+app.set('port', (process.env.PORT || 5000));
+app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(request, response) {
-	response.send('Hi');
+  response.send('Hello World!');
+});
+
+app.listen(app.get('port'), function() {
+  console.log("Node app is running at localhost:" + app.get('port'));
 });
