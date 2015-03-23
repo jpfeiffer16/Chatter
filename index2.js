@@ -22,16 +22,17 @@ var serverSentEvents = new sse(server);
 
 app.use(bodyParser());
 //Send the html for the one-page app
-app.get('/', function(request, response) {
-	var page = getPage('404.html', 'chatter.html');
-	response.send(page);
-	response.send("Hi");
-});
+//app.get('/', function(request, response) {
+//	var page = getPage('404.html', 'chatter.html');
+//	response.send(page);
+//	response.send("Hi");
+//});
 
 app.get('*', function(request, response) {
 	var page = getPage('404.html', request.path);
 	var extension = path.extname(request.path);
 	response.header('Content-Type', getMimeType(request.path));
+	response.header('Access-Control-Allow-Origin', '*');
 	var fileExts = '.jpg.jpeg.png.woff';
 	if(fileExts.indexOf(extension) != -1) {
 		response.sendFile(__dirname + path.normalize(request.path));
