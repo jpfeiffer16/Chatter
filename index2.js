@@ -62,6 +62,9 @@ app.post('/', function(request, response) {
 			clearInterval(interval);
 		}, 5000);
 	}
+	if(data.message.indexOf('clear/') != -1) {
+		clientList = [];
+	}
 	messages.push(data);
 	sendToClients(JSON.stringify(data));
 	response.send('recieved');
