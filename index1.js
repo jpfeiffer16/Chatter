@@ -23,7 +23,6 @@ app.use(bodyParser());
 app.get('/', function(request, response) {
 	var page = getPage('404.html', 'chatter.html');
 	response.send(page);
-	response.send("Hi");
 });
 
 app.get('*', function(request, response) {

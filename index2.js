@@ -2,31 +2,36 @@ var path = require('path');
 var fileSystem = require('fs');
 var mime = require('mime');
 var sse = require('sse');
+var https = require('https');
 
 var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
 
-var port = 1337;
+var defaultPort = 1337;
 
-app.set('port', (process.env.PORT || 5000));
+//var options = {
+//  key: fs.readFileSync('test/fixtures/keys/agent2-key.pem'),
+//  cert: fs.readFileSync('test/fixtures/keys/agent2-cert.pem')
+//};
+
+app.set('port', (process.env.PORT || defaultPort));
 
 var messages = [];
 
 var server = app.listen(app.get('port'), function(request, response) {
 	console.log('------------------------');
-	console.log('Yo, sup homi.. Welcome to the server for chatter. Your server\'s at localhost on port %s', port);
+	console.log('Yo, sup homi.. Welcome to the server for chatter. Your server\'s at localhost on port %s', app.get('port'));
 });
 
 var serverSentEvents = new sse(server);
 
 app.use(bodyParser());
 //Send the html for the one-page app
-//app.get('/', function(request, response) {
-//	var page = getPage('404.html', 'chatter.html');
-//	response.send(page);
-//	response.send("Hi");
-//});
+app.get('/', function(request, response) {
+	var page = getPage('404.html', 'chatter.html');
+	response.send(page);
+});
 
 app.get('*', function(request, response) {
 	var page = getPage('404.html', request.path);
