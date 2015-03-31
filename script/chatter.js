@@ -1,4 +1,6 @@
 $(document).on('ready', function() {
+	var windowIsInFocus = true;
+	
 	setCreds();
 
 	
@@ -6,6 +8,13 @@ $(document).on('ready', function() {
 	reposition();
 	
 	
+	
+	window.onfocus = function() {
+		windowIsInFocus = true;
+	};
+	window.onblur = function() {
+		windowIsInFocus = false;
+	};
 	
 	function reposition() {
 		var messageListHeight = $(window).height() * .815;
@@ -26,6 +35,9 @@ $(document).on('ready', function() {
 		
 		messageList.scrollTop(messageList[0].scrollHeight);
 		//console.log(html);
+		if(!windowIsInFocus) {
+			notify(context.username + ':', context.message, context.image);
+		}
 	}
 	
 	$('#new-message-controls-container .controls .button').on('click', function(e) {
@@ -75,4 +87,16 @@ $(document).on('ready', function() {
 		$('#settings .username').val(localStorage.getItem('username'));
 	}
 	
+	function notify(notificationTitle, notificationMessage, userImage) {
+		Notification.requestPermission();
+
+		var notification = new Notification(notificationTitle, {
+			icon: userImage,
+			body: notificationMessage,
+		});
+		$(notification).on('click', function() {
+			window.focus();
+		});
+		setTimeout(function() {notification.close()}, 6000);
+	}
 });
