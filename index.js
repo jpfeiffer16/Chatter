@@ -99,6 +99,8 @@ function getPage(defaultPage, url) {
 
 function catchup(client) {
 	for(var i = 0; i < messages.length; i++) {
+		var connectionEvent = '{\"event\" : \"connection\"}'
+		clientList[i].send(connectionEvent);
 		client.send(JSON.stringify(messages[i]));
 	}
 }

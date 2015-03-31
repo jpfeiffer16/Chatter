@@ -3,11 +3,7 @@ $(document).on('ready', function() {
 	
 	setCreds();
 
-	
-	
 	reposition();
-	
-	
 	
 	window.onfocus = function() {
 		windowIsInFocus = true;
@@ -30,6 +26,9 @@ $(document).on('ready', function() {
 		var source = $('#message-template').html();
 		var newMessageTemplate = Handlebars.compile(source);
 		var context = JSON.parse(event.data);
+		if(context.event == 'connection') {
+			$('#message-list li').remove();
+		}
 		var html = newMessageTemplate(context);
 		messageList.append(html);
 		
@@ -65,7 +64,7 @@ $(document).on('ready', function() {
 		var username = $('#settings .username').val();
 		//"img/cubes.jpg"
 		//alert(window.location.hostname + ", " + window.location.port);
-		$.post(location.protocol + '//' + window.location.hostname + ':' + window.location.port,{image: imageUrl, time: date.getHours().toString() + ':' + date.getMinutes().toString(), username: username, message: $('#new-message-controls-container .controls .text').val()})
+		$.post(location.protocol + '//' + window.location.hostname + ':' + window.location.port,{image: imageUrl, time: date.getHours().toString() + ':' + date.getMinutes().toString(), username: username, message: $('#new-message-controls-container .controls .text').val(), event: 'message'})
 		.done(function(data) {
 			if(data == 'recieved') {
 				console.log('Post send');
