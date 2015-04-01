@@ -28,14 +28,20 @@ $(document).on('ready', function() {
 		var context = JSON.parse(event.data);
 		if(context.event == 'connection') {
 			$('#message-list li').remove();
-		}
-		var html = newMessageTemplate(context);
-		messageList.append(html);
-		
-		messageList.scrollTop(messageList[0].scrollHeight);
-		//console.log(html);
-		if(!windowIsInFocus) {
-			notify(context.username + ':', context.message, context.image);
+		} else if(context.event == 'typing') {
+			$('#typing-status').text(context.username + ' is typing');
+			setTimeout(function() {
+				$('#typing-status').text('');
+			}, 800);
+		} else {
+			var html = newMessageTemplate(context);
+			messageList.append(html);
+
+			messageList.scrollTop(messageList[0].scrollHeight);
+			//console.log(html);
+			if(!windowIsInFocus) {
+				notify(context.username + ':', context.message, context.image);
+			}
 		}
 	}
 	
@@ -48,6 +54,18 @@ $(document).on('ready', function() {
 			e.preventDefault();
 			sendMessage();
 		}
+	});
+	
+	$('#new-message-controls-container .controls .text').on('keypress', function(e) {
+		var username = $('#settings .username').val();
+		$.post(location.protocol + '//' + window.location.hostname + ':' + window.location.port,{username: username, event: 'typing'})
+		.done(function(data) {
+			if(data == 'recieved') {
+				console.log('Post send');
+			} else {
+				console.warn('Post not sent correctly');
+			}
+		});
 	});
 	
 	$(window).on('resize', function() {
